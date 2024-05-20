@@ -1,0 +1,22 @@
+[
+  { "name": "Speedy", "color": "Siyah", "condition": 85 },
+  { "name": "Thunder", "color": "Beyaz", "condition": 72 },
+  { "name": "Shadowfax", "color": "Kahverengi", "condition": 94 },
+  { "name": "Blaze", "color": "Sarı", "condition": 63 },
+  { "name": "Stormy", "color": "Kırmızı", "condition": 77 },
+  { "name": "Midnight", "color": "Mavi", "condition": 88 },
+  { "name": "Whisper", "color": "Yeşil", "condition": 70 },
+  { "name": "Flash", "color": "Mor", "condition": 82 },
+  { "name": "Comet", "color": "Turuncu", "condition": 91 },
+  { "name": "Rapid", "color": "Pembe", "condition": 68 },
+  { "name": "Spirit", "color": "Gri", "condition": 75 },
+  { "name": "Jet", "color": "Koyu Mavi", "condition": 83 },
+  { "name": "Aurora", "color": "Bordo", "condition": 79 },
+  { "name": "Shadow", "color": "Açık Yeşil", "condition": 89 },
+  { "name": "Fury", "color": "Açık Mavi", "condition": 71 },
+  { "name": "Blitz", "color": "Pırıltılı", "condition": 95 },
+  { "name": "Racer", "color": "Sedefli", "condition": 78 },
+  { "name": "Bolt", "color": "Metalik Gri", "condition": 86 },
+  { "name": "Mystique", "color": "Metalik Mavi", "condition": 90 },
+  { "name": "Swift", "color": "Metalik Yeşil", "condition": 80 }
+]
