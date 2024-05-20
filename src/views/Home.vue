@@ -34,8 +34,8 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
 import HorseList from '../components/HorseList.vue'
 import RaceSchedule from '../components/RaceSchedule.vue'
 import RaceResults from '../components/RaceResults.vue'
@@ -43,7 +43,6 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 
-const horses = computed(() => store.state.racing.horses)
 const races = computed(() => store.state.racing.races)
 const results = computed(() => store.state.racing.results)
 const currentRaceIndex = computed(() => store.state.racing.currentRaceIndex)

@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 
@@ -42,7 +42,7 @@ const store = useStore()
 
 const horses = computed(() => store.state.racing.horses)
 
-const colors = [
+const colors: string[] = [
   "#FF5733",
   "#33FF57",
   "#3357FF",
@@ -66,7 +66,7 @@ const colors = [
 ]
 
 const generateHorses = () => {
-  const horsesTemp = []
+  const horsesTemp: { id: number, name: string, condition: number, color: string }[] = []
   for (let i = 1; i <= 20; i++) {
     horsesTemp.push({
       id: i,
@@ -81,6 +81,7 @@ const generateHorses = () => {
 onMounted(() => {
   generateHorses()
 })
+
 </script>
 
 <style scoped>

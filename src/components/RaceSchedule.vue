@@ -4,15 +4,15 @@
     <div class="table-responsive">
       <table>
         <tbody>
-          <template v-for="(race, rI) in races">
+          <template v-for="(race, rI) in races" :key="`race-${rI}`">
             <tr>
-              <td colspan="2" style="background-color: red; text-align: center;">{{ `${rI + 1}. Lap - ${race.distance}m` }}</td>
+              <td :colspan="2" style="background-color: red; text-align: center;">{{ `${rI + 1}. Lap - ${race.distance}m` }}</td>
             </tr>
             <tr>
               <td class="table--th">Position</td>
               <td class="table--th">Name</td>
             </tr>
-            <template v-for="(horse, hI) in race.horses">
+            <template v-for="(horse, hI) in race.horses" :key="`horse-${hI}`">
               <tr>
                 <td>{{ hI + 1 }}</td>
                 <td style="text-align: center;">{{ horse.name }}</td>
@@ -25,47 +25,45 @@
   </div>
 </template>
 
+<script setup lang="ts">
+import { computed, defineExpose } from 'vue';
+import { useStore } from 'vuex';
 
-<script setup>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+const store = useStore();
 
-const store = useStore()
+const horses = computed(() => store.state.racing.horses);
+const races = computed(() => store.state.racing.races);
 
-const horses = computed(() => store.state.racing.horses)
-const races = computed(() => store.state.racing.races)
-
-const getRandomHorses = (n) => {
-  const horsesTemp = []
-  const availableHorses = [...horses.value]
+const getRandomHorses = (n: number) => {
+  const horsesTemp = [];
+  const availableHorses = [...horses.value];
   for (let i = 0; i < n; i++) {
-    const randomIndex = Math.floor(Math.random() * availableHorses.length)
-    const selectedHorse = availableHorses.splice(randomIndex, 1)[0]
-    horsesTemp.push({...selectedHorse, location: 0})
+    const randomIndex = Math.floor(Math.random() * availableHorses.length);
+    const selectedHorse = availableHorses.splice(randomIndex, 1)[0];
+    horsesTemp.push({ ...selectedHorse, location: 0 });
   }
-  return horsesTemp
-}
+  return horsesTemp;
+};
 
 // create list for all races randomly
 const generateRaces = () => {
-  const racesTemp = []
+  const racesTemp = [];
   for (let i = 0; i < 6; i++) {
-    const distance = [1200, 1400, 1600, 1800, 2000, 2200][i]
-    const horsesRandom = getRandomHorses(10)
+    const distance = [1200, 1400, 1600, 1800, 2000, 2200][i];
+    const horsesRandom = getRandomHorses(10);
     racesTemp.push({
       id: i + 1,
       distance: distance,
       horses: horsesRandom,
       result: null,
-    })
+    });
   }
-  store.dispatch('racing/fetchRaces', racesTemp)
-}
+  store.dispatch('racing/fetchRaces', racesTemp);
+};
 
 defineExpose({
   generateRaces
-})
-
+});
 </script>
 
 <style scoped>

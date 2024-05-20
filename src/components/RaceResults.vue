@@ -4,18 +4,18 @@
     <div class="table-responsive">
       <table>
         <tbody>
-          <template v-for="(race, rI) in results">
+          <template v-for="(race, rI) in results" :key="`race-${rI}`">
             <tr>
-              <td colspan="2" style="background-color: red; text-align: center;">{{ `${rI + 1}. Lap - ${race.distance}m` }}</td>
+              <td :colspan="2" style="background-color: red; text-align: center;">{{ `${rI + 1}. Lap - ${race.distance}m` }}</td>
             </tr>
             <tr>
               <td class="table--th">Position</td>
               <td class="table--th">Name</td>
             </tr>
-            <template v-for="(horse, hI) in race.result">
+            <template v-for="(horse, hI) in race.result" :key="`horse-${hI}`">
               <tr>
-                <td :style="{ 'background-color': hI === 0 ? '#2eba2e' : 'unset'}" >{{ hI + 1 }}</td>
-                <td :style="{ 'background-color': hI === 0 ? '#2eba2e' : 'unset'}" style="text-align: center;">{{ horse.name }}</td>
+                <td :style="{ 'background-color': hI === 0 ? '#2eba2e' : 'unset' }">{{ hI + 1 }}</td>
+                <td :style="{ 'background-color': hI === 0 ? '#2eba2e' : 'unset' }" style="text-align: center;">{{ horse.name }}</td>
               </tr>
             </template>
           </template>
@@ -25,54 +25,54 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+<script setup lang="ts">
+import { computed, defineExpose } from 'vue';
+import { useStore } from 'vuex';
+import { Horse } from '../types';
 
-const store = useStore()
+const store = useStore();
 
-const horses = computed(() => store.state.racing.horses)
-const races = computed(() => store.state.racing.races)
-const results = computed(() => store.state.racing.results)
-const currentRaceIndex = computed(() => store.state.racing.currentRaceIndex)
+const racingState = computed(() => store.state.racing);
+const races = computed(() => racingState.value.races);
+const results = computed(() => racingState.value.results);
+const currentRaceIndex = computed(() => racingState.value.currentRaceIndex);
 
 const startRaces = () => {
-  // start first race, recursive function
-  runRace(currentRaceIndex.value)
-}
+  runRace(currentRaceIndex.value);
+};
 
-const runRace = (index) => {
-  const width = document.getElementsByClassName("runway")[0].offsetWidth
-  
+const runRace = (index: number) => {
+  const width = (document.getElementsByClassName("runway")[0] as HTMLElement).offsetWidth;
+
   // Set up an interval to update horse positions
   let intervalID = setInterval(() => {
-    races.value[index].horses.forEach((horse, index) => {
+    races.value[index].horses.forEach((horse: Horse) => {
       // Calculate the new location based on horse's condition and track width
-      horse.location = (horse.location + (horse.condition / (10 / (width / 100)))) > width ? width : (horse.location + (horse.condition / (10 / (width / 100))))
-    })
+      horse.location = (horse.location + (horse.condition / (10 / (width / 100)))) > width ? width : (horse.location + (horse.condition / (10 / (width / 100))));
+    });
 
     // Check if any horse has reached end of the track
-    if (races.value[index].horses.some(horse => horse.location >= (width - 100))) {
-      clearInterval(intervalID)
+    if (races.value[index].horses.some((horse: Horse) => horse.location >= (width - 100))) {
+      clearInterval(intervalID);
 
-      const horsesTemp = [...races.value[index].horses]
-      const sortedHorses = horsesTemp.sort((a, b) => b.condition - a.condition)
-      races.value[index].result = sortedHorses
-      store.dispatch('racing/fetchResults', races.value[index])
+      const horsesTemp = [...races.value[index].horses];
+      const sortedHorses = horsesTemp.sort((a, b) => b.condition - a.condition);
+      races.value[index].result = sortedHorses;
+      store.dispatch('racing/fetchResult', races.value[index]);
 
-      store.dispatch('racing/incrementCurrentRaceIndex')
+      store.dispatch('racing/incrementCurrentRaceIndex');
 
       // Check if there are more races to run
-      if(currentRaceIndex.value < 6) {
-        runRace(currentRaceIndex.value)
+      if (currentRaceIndex.value < 6) {
+        runRace(currentRaceIndex.value);
       }
     }
-  }, 500)
-}
+  }, 500);
+};
 
 defineExpose({
   startRaces
-})
+});
 </script>
 
 <style scoped>
