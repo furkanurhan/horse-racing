@@ -51,10 +51,10 @@ const currentRaceIndex = computed(() => store.state.racing.currentRaceIndex)
 const raceScheduleRef = ref(null);
 const raceResultsRef = ref(null);
 
+// trigger child comp func
 const generateRaces = () => {
   raceScheduleRef.value.generateRaces()
 }
-
 const startRaces = () => {
   raceResultsRef.value.startRaces()
 }

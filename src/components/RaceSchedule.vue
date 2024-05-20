@@ -46,6 +46,7 @@ const getRandomHorses = (n) => {
   return horsesTemp
 }
 
+// create list for all races randomly
 const generateRaces = () => {
   const racesTemp = []
   for (let i = 0; i < 6; i++) {

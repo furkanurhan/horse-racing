@@ -37,17 +37,21 @@ const results = computed(() => store.state.racing.results)
 const currentRaceIndex = computed(() => store.state.racing.currentRaceIndex)
 
 const startRaces = () => {
+  // start first race, recursive function
   runRace(currentRaceIndex.value)
 }
 
 const runRace = (index) => {
   const width = document.getElementsByClassName("runway")[0].offsetWidth
   
+  // Set up an interval to update horse positions
   let intervalID = setInterval(() => {
     races.value[index].horses.forEach((horse, index) => {
+      // Calculate the new location based on horse's condition and track width
       horse.location = (horse.location + (horse.condition / (10 / (width / 100)))) > width ? width : (horse.location + (horse.condition / (10 / (width / 100))))
     })
 
+    // Check if any horse has reached end of the track
     if (races.value[index].horses.some(horse => horse.location >= (width - 100))) {
       clearInterval(intervalID)
 
@@ -58,6 +62,7 @@ const runRace = (index) => {
 
       store.dispatch('racing/incrementCurrentRaceIndex')
 
+      // Check if there are more races to run
       if(currentRaceIndex.value < 6) {
         runRace(currentRaceIndex.value)
       }
